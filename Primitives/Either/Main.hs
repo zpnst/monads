@@ -1,14 +1,14 @@
-import Prelude hiding (Either(..), either, (>>=), (>>), return)
+import Prelude hiding (Monad(..), Either(..), either, (>>=), (>>), return)
 
 data Either a b = Left a | Right b deriving (Show)
 
-class Monadi m where 
+class Monad m where 
     (>>=)  :: m a -> (a -> m b) -> m b
     (>>)   :: m a -> m b -> m b
     return :: a -> m a
     -- f >> s = f >>= (\_ -> s)
 
-instance Monadi (Either e) where 
+instance Monad (Either e) where 
     -- >>= :: Either e a -> (a -> Either e b) -> Either e b
     Left err >>= _ = Left err
     Right v >>= f = f v

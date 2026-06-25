@@ -11,11 +11,17 @@ is
 RealWorld -> (a, RealWorld) -> (a -> RealWorld -> (b, RealWorld)) -> RealWorld -> (b, RealWorld)
 
 so if we uncurry function with this type (a -> RealWorld -> (b, RealWorld)), we will recieve
-    ((a, RealWorld) -> (b, RealWorld)) and the imput of this function will be the output of the
+    ((a, RealWorld) -> (b, RealWorld)) and the input of this function will be the output of the
     first RealWorld Transformer, so we can compose them! and return lambda that waits for the first
     initial state of the RealWorld!
 
 -}
+
+-- irwt - initial state of the real worl
+>>= :: IO a -> (a -> IO b) -> IO b
+rwt >>= foo = \irwt -> 
+        let (ch, rwt2) = rwt irwt in
+            foo ch rwt2
 
 >>= :: IO a -> (a -> IO b) -> IO b
 rwt >>= foo = uncurry foo . rwt

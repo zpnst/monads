@@ -1,14 +1,14 @@
-import Prelude hiding (Maybe(..), maybe, (>>=), (>>), return)
+import Prelude hiding (Monad(..), Maybe(..), maybe, (>>=), (>>), return)
 
 data Maybe a = Nothing | Just a deriving (Show)
 
-class Monadi m where
+class Monad m where
     (>>=)  :: m a -> (a -> m b) -> m b
     (>>)   :: m a -> m b -> m b
     return :: a -> m a
     -- f >> s = f >>= (\_ -> s)
 
-instance Monadi Maybe where 
+instance Monad Maybe where 
     -- >>= :: Maybe a -> (a -> Maybe b) -> Maybe b
     Just v   >>= f = f v
     Nothing  >>= _ = Nothing 

@@ -1,4 +1,4 @@
-import Prelude hiding ((>>=), (>>), return, map, concat)
+import Prelude hiding (Monad(..), (>>=), (>>), return, map, concat)
 
 infixr 5 :!
 infixr 5 +!
@@ -20,19 +20,25 @@ concat :: List (List a) -> List a
 concat Nil       = Nil
 concat (xs:!xxs) = xs +! concat xxs 
  
+-- ghci> list (list 1) +! list (1 :! 2 :! 3 :! 4 :! list 5)
+-- ![![1]!, ![1, 2, 3, 4, 5]!]!
+-- ghci> concat $ list (list 1) +! list (1 :! 2 :! 3 :! 4 :! list 5)
+-- ![1, 1, 2, 3, 4, 5]!
+-- ghci> 
+
 instance (Show a) => Show (List a) where 
     show xxs = "![" ++ list xxs ++ "]!"
         where list Nil = ""
               list (x:!Nil) = show x
               list (x:!xs)  = show x ++ ", " ++ list xs 
 
-class Monadi m where 
+class Monad m where 
     (>>=)  :: m a -> (a -> m b) -> m b
     (>>)   :: m a -> m b -> m b
     return :: a -> m a
     -- x >> y = x >>= \_ -> y 
 
-instance Monadi List where
+instance Monad List where
     -- (>>=)  :: ![a]! -> (a -> ![b]!) -> ![b]!
     xs >>= f = concat $ map f xs 
 
