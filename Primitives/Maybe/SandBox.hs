@@ -1,20 +1,21 @@
-import Prelude hiding (Maybe(..), maybe, (>>=), (>>), return)
+import Prelude hiding (Maybe(..), maybe)
 
 type Secret = String
+type Password = String
 
 data Maybe a = Nothing | Just a deriving (Show)
 
-checkPassword :: String -> Maybe Secret
+checkPassword :: Password -> Maybe Secret
 checkPassword p
-    | p == "1234" = Just "SECRET"
+    | p == "1234" = Just "...your secret data..."
     | otherwise = Nothing
 
 printSecret :: Maybe Secret -> IO ()
-printSecret Nothing = putStrLn "Incorret password!"
+printSecret Nothing = putStrLn "Incorrect password!"
 printSecret (Just secret) = putStrLn $ "Your secret: " ++ secret
 
 main :: IO ()
 main = do
     putStrLn "Enter password to get a secret: "
-    some <- getLine
-    (printSecret . checkPassword) some
+    password <- getLine
+    (printSecret . checkPassword) password

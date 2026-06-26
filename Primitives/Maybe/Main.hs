@@ -1,3 +1,6 @@
+-- For custom do-notation
+{-# LANGUAGE RebindableSyntax #-} 
+
 import Prelude hiding (Monad(..), Maybe(..), maybe, (>>=), (>>), return)
 
 data Maybe a = Nothing | Just a deriving (Show)
@@ -35,3 +38,15 @@ maybe d _ Nothing  = d
 -- ghci> maybe "some error" (\x -> "ura " ++ show x) (Nothing)
 -- "some error"
 -- ghci> 
+
+-- Bind operator
+someFoo = 
+    Just 15 >>= (\x -> 
+    Just (x + 15)) >>= (\y -> 
+    Just (y + 12))
+
+-- Do-notation
+someFooDo = do
+    x <- Just 15
+    y <- Just (x + 15) 
+    Just (y + 12)

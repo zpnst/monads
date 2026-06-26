@@ -1,3 +1,6 @@
+-- For custom do-notation
+{-# LANGUAGE RebindableSyntax #-} 
+
 import Prelude hiding (Monad(..), Either(..), either, (>>=), (>>), return)
 
 data Either a b = Left a | Right b deriving (Show)
@@ -35,3 +38,16 @@ either e _ (Left err) =  e err
 -- ghci> either (\err -> "error: " ++ show err) (\ok -> "ok: " ++ show ok) (Left 42)
 -- "error: 42"
 -- ghci> 
+
+
+-- Bind operator
+someFoo = 
+    Right 10 >>= \x -> 
+    Right (x + 42) >>= \y -> 
+    Right (y + 5)
+
+-- Do-notation
+someFooDo = do
+    x <- Right 10
+    y <- Right (x + 42)
+    Right (y + 5)

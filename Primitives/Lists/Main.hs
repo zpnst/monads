@@ -1,3 +1,6 @@
+-- For custom do-notation
+{-# LANGUAGE RebindableSyntax #-} 
+
 import Prelude hiding (Monad(..), (>>=), (>>), return, map, concat)
 
 infixr 5 :!
@@ -55,3 +58,15 @@ instance Monad List where
 -- ghci> (1 :! list 2) >>= \dice1 -> (10 :! list 20) >>= \dice2 -> list (dice1 + dice2)
 -- ![11, 21, 12, 22]!
 -- ghci> 
+
+-- Bind operator
+someFoo = 
+    (1 :! list 2) >>= \dice1 ->
+    (10 :! list 20) >>= \dice2 -> 
+    list (dice1 + dice2)
+
+-- Do-notation
+someFooDo = do
+    dice1 <- (1 :! list 2)
+    dice2 <- (10 :! list 20)
+    list (dice1 + dice2)
